@@ -160,6 +160,7 @@ class Circuit:
         return str(self.gates_list)
 
     def g_add(self, name, targets=[], controls=[]):
+        """ Adds a specified gate to the circuit """
 
         if name == GName.CCCX:
             self.c_extend(Toffoli_4q(targets, controls))
@@ -179,7 +180,7 @@ class Circuit:
         return new_gate
 
     def g_add_reg(self, name, targets=[]):
-        """ Adds a specified one qubit gate to each target """
+        """ Adds a specified single-qubit gate to each target """
 
         name: GName
         for target in targets:
@@ -325,8 +326,12 @@ def multi_control_gate_3cx(gate, target, ctrls) -> Circuit:
     delta = 0
     for ct in range(3, addBits, 2):
         if delta == 0:
-            circ.g_add(GName.CCCX, targets=Qubit(1, is_ancilla=True), controls=[
-                       ctrls[ct], ctrls[ct + 1], Qubit(0, is_ancilla=True)])
+            try:
+                circ.g_add(GName.CCCX, targets=Qubit(1, is_ancilla=True), controls=[
+                        ctrls[ct], ctrls[ct + 1], Qubit(0, is_ancilla=True)])
+            except:
+                circ.g_add(GName.CCX, targets=Qubit(1, is_ancilla=True), controls=[
+                        ctrls[ct], Qubit(0, is_ancilla=True)])
 
         else:
             try:
