@@ -490,23 +490,23 @@ def print_circ(circuit=Circuit()):
 
         if type(gate.controls) == list:
             for qubit in gate.controls:
-                gate_lst.append("q[{0}]".format(qubit.index))
+                gate_lst.append(f"q[{qubit.index}]")
         else:
-            gate_lst.append("q[{0}]".format(gate.controls))
+            gate_lst.append(f"q[{gate.controls}]")
 
         if type(gate.targets) == list:
             for qubit in gate.targets:
-                gate_lst.append("q[{0}]".format(qubit.index))
+                gate_lst.append(f"q[{qubit.index}]")
         else:
-            gate_lst.append("q[{0}]".format(gate.targets))
+            gate_lst.append(f"q[{gate.targets}]")
 
         separator = ", "
         gate_str = separator.join(gate_lst)
-        print("{0} {1};".format(gate.name.value, gate_str))
+        print(f"{gate.name.value} {gate_str};")
 
     mes: Measurement
     for mes in circuit.measurement_list:
-        print("measure q[{0}] -> c[{1}];".format(mes.qubit, mes.classic_bit))
+        print(f"measure q[{mes.qubit}] -> c[{mes.classic_bit}];")
 
 
 def export_qasm(filename, circuit=Circuit()):
@@ -529,24 +529,23 @@ def export_qasm(filename, circuit=Circuit()):
 
         if type(gate.controls) == list:
             for qubit in gate.controls:
-                gate_lst.append("q[{0}]".format(qubit.index))
+                gate_lst.append(f"q[{qubit.index}]")
         else:
-            gate_lst.append("q[{0}]".format(gate.controls))
+            gate_lst.append(f"q[{gate.controls}]")
 
         if type(gate.targets) == list:
             for qubit in gate.targets:
-                gate_lst.append("q[{0}]".format(qubit.index))
+                gate_lst.append(f"q[{qubit.index}]")
         else:
-            gate_lst.append("q[{0}]".format(gate.targets))
+            gate_lst.append(f"q[{gate.targets}]")
 
         separator = ", "
         gate_str = separator.join(gate_lst)
-        write_qasm(filename, "{0} {1};".format(gate.name.value, gate_str))
+        write_qasm(filename, f"{gate.name.value} {gate_str};")
 
     mes: Measurement
     for mes in circuit.measurement_list:
-        write_qasm(filename,
-            "measure q[{0}] -> c[{1}];".format(mes.qubit, mes.classic_bit))
+        write_qasm(filename, f"measure q[{mes.qubit}] -> c[{mes.classic_bit}];")
     
     Register.last_qubit_index = -1
 

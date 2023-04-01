@@ -21,3 +21,7 @@ See "qnn_static_test.py" and "qnn_generation_tests.py" for usage examples
 1) Running "qnn_static_test.py" returns a file with a training circuit for a simple example neural network (perceptron). The purpose of this usage example is to show how circuits could be built using the pre-defined "building blocks" in "naginata.py"
 
 2) Running "qnn_generation_tests.py" returns 3 files with training circuits for 3 simple example neural networks (perceptrons).
+
+## Links to papers describing used models and methods
+1) [Pronin CB, Ostroukh AV. Parametric Synthesis of Computational Circuits for Complex Quantum Algorithms. arXiv preprint arXiv:2209.09903. 2022 Sep 20. URL: https://arxiv.org/abs/2209.09903](https://arxiv.org/abs/2209.09903)
+2) [Pronin CB, Ostroukh AV. Parametric Synthesis of Quantum Circuits for Training Perceptron Neural Networks. arXiv preprint arXiv:2209.09496. 2022 Sep 20. URL: https://arxiv.org/abs/2209.09496](https://arxiv.org/abs/2209.09496)
