@@ -6,14 +6,20 @@ by Cesar Pronin (MexIvanov)
 
 from enum import Enum, auto
 from typing_extensions import Self
+import logging as log
 
-""" Config:
-    DEBUG_MODE = True -> print the inputs/outputs of custom gates
-    PRINT_QASM = True -> print generated QASM code to terminal
+
+NO_LOGGING = 3
+DEBUG_MODE = 2
+DEBUG_QASM = 1
+
+""" Setting Logging levels in log.basicConfig:
+    DEBUG_MODE -> print the inputs/outputs of custom gates
+    DEBUG_QASM -> also print generated QASM code to terminal
+    NO_LOGGING -> Disable synthesis logging
 """
 
-DEBUG_MODE = True
-PRINT_QASM = False
+log.basicConfig(level=DEBUG_MODE, format="")
 
 
 class GName(Enum):
@@ -293,8 +299,7 @@ def multi_target_gate(gate, targets, control, qreverse=False) -> Circuit:
 def if_equal(targets, ctrls, qreverse=False) -> Circuit:
     """ Compares target and control qubits. Result is written to target qubits """
     
-    if DEBUG_MODE:
-        print("If_Equal Targets: " + str(targets) + " ctrls: " + str(ctrls))
+    log.log(level=DEBUG_MODE, msg=f"If_Equal Targets: {targets}; Controls: {ctrls}")
 
     circ = Circuit()
 
@@ -314,9 +319,7 @@ def multi_control_gate_3cx(gate, target, ctrls) -> Circuit:
     gate can be specified as GName.CX, CY, CZ ...
     """
 
-    if DEBUG_MODE:
-        print("multi_control_gate_3cx Gate: " + str(gate) +
-            " Targets: " + str(target) + " Controls " + str(ctrls))
+    log.log(level=DEBUG_MODE, msg=f"multi_control_gate_3cx Gate: {gate}; Targets: {target}; Controls: {ctrls}")
 
     addBits = len(ctrls)
     circ = Circuit()
@@ -358,8 +361,7 @@ def adder(sum1_nq, res_nq, qreverse=False) -> Circuit:
     based on an example in Craig Gidney's "Quirk" Quantum Simulator
     """
     
-    if DEBUG_MODE:
-        print("Adder:" + str(sum1_nq) + " to result " + str(res_nq))
+    log.log(level=DEBUG_MODE, msg=f"Adder on qubits: {sum1_nq} + {res_nq}; result on qubits: {res_nq}")
     
     circ = Circuit()
 
@@ -410,9 +412,7 @@ def multiplier(m1_reg, m2_reg, res_reg, qreverse=False) -> Circuit:
     Based on classic long multiplication combined with quantum adders
     """
 
-    if DEBUG_MODE:
-        print("Multiply: " + str(m1_reg) + " x " +
-            str(m2_reg) + " result " + str(res_reg))
+    log.log(level=DEBUG_MODE, msg=f"Multiplier on qubits: {m1_reg} * {m2_reg}; result on qubits: {res_reg}")
 
     circ = Circuit()
 
@@ -444,9 +444,7 @@ def multiplier_asymmetric(m1_reg, m2_reg, res_reg, qreverse=False):
     Based on classic long multiplication combined with quantum adders
     """
 
-    if DEBUG_MODE:
-        print("Multiply: " + str(m1_reg) + " x " +
-            str(m2_reg) + " result " + str(res_reg))
+    log.log(level=DEBUG_MODE, msg=f"Multiplier on qubits: {m1_reg} * {m2_reg}; result on qubits: {res_reg}")
 
     if len(res_reg) < len(m1_reg) + len(m2_reg):
         return print("Error: resulting register too small for multiplication!")
@@ -520,8 +518,7 @@ def export_qasm(filename, circuit=Circuit()):
     with open(filename, "w", encoding="utf-8") as f:
         f.write(header + "\n")
 
-    if (PRINT_QASM):
-        print(header)
+    log.log(level=DEBUG_QASM, msg=header)
 
     gate: Gate
     for gate in circuit.gates_list:
@@ -556,8 +553,7 @@ def write_qasm(filename, line):
     with open(filename, "a", encoding="utf-8") as f:
         f.write(line + "\n")
 
-        if (PRINT_QASM):
-            print(line)
+        log.log(level=DEBUG_QASM, msg=line)
 
 
 """ Quantum Neural Network synthesis related section """
